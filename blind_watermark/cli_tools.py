@@ -11,6 +11,7 @@ optParser.add_option('--extract', dest='work_mode', action='store_const', const=
                      , help='Extract watermark from images')
 
 optParser.add_option('-p', '--pwd', dest='password', help='password, like 1234')
+optParser.add_option('--wm_mode', dest='wm_mode', help='WaterMark mode, like str, img, only used for embed. Default: str')
 optParser.add_option('--wm_shape', dest='wm_shape', help='Watermark shape, like 120')
 
 (opts, args) = optParser.parse_args()
@@ -25,7 +26,10 @@ def main():
             return
         else:
             bwm1.read_img(args[0])
-            bwm1.read_wm(args[1], mode='str')
+            mode = 'str'
+            if opts.wm_mode:
+              mode = opts.wm_mode
+            bwm1.read_wm(args[1], mode)
             bwm1.embed(args[2])
             print('Embed succeed! to file ', args[2])
             print('Put down watermark size:', len(bwm1.wm_bit))
